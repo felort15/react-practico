@@ -16,8 +16,8 @@ const Card = ({ title, price, category, image }: CardProps) => {
         </div>
       </figure>
       <p className='flex justify-between'>
-        <span className='text-sm font-light'>{title}</span>
-        <span className='text-lg font-medium'>${price}</span>
+        <span className='text-sm font-light px-2'>{title}</span>
+        <span className='text-lg font-medium px-2'>${price}</span>
       </p>
     </div>
   )
