@@ -1,9 +1,15 @@
 import { NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { ShoppingCartContext } from '../../Context'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartItems, removeFromCart } = useContext(ShoppingCartContext);
   const activeStyle = 'underline underline-offset-4'
+
+  const handleRemoveItem = (id: number) => {
+    removeFromCart(id);
+  };
 
   return (
     <nav className='flex flex-col md:flex-row justify-between items-center fixed z-10 w-full py-5 px-8 text-sm font-light bg-white'>
@@ -33,7 +39,7 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/Mens clothingg'
+            to='/mens-clothing'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
@@ -51,16 +57,16 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/jewerly'
+            to='/jewelry'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
-            Jewerly
+            Jewelry
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/women clothing'
+            to='/womens-clothing'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
@@ -110,8 +116,36 @@ const Navbar = () => {
             Sign In
           </NavLink>
         </li>
-        <li>
-          🛒 0
+        <li className="relative group">
+          <div className="flex items-center cursor-pointer">
+            <span>🛒</span>
+            <span className="ml-1 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              {cartItems.length}
+            </span>
+          </div>
+          
+          {/* Dropdown menu */}
+          {cartItems.length > 0 && (
+            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl invisible group-hover:visible">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-2">Cart Items</h3>
+                <ul className="space-y-2">
+                  {cartItems.map(item => (
+                    <li key={item.id} className="flex justify-between items-center">
+                      <span className="text-sm truncate flex-1">{item.title}</span>
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="ml-2 text-red-500 hover:text-red-700"
+                        title="Remove item"
+                      >
+                        ×
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </li>
       </ul>
     </nav>

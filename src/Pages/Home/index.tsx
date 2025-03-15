@@ -57,10 +57,12 @@ function Home() {
               items.map(item => (
                 <div key={item.id} className="w-full flex justify-center">
                   <Card 
+                    id={item.id}
                     title={item.title}
                     price={item.price}
                     category={{ name: item.category }}
                     images={[item.image]}
+                    description={item.description}
                   />
                 </div>
               ))

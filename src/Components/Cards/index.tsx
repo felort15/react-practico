@@ -1,20 +1,41 @@
-import { FC, useState } from 'react';
+import { FC, useState, useContext } from 'react';
+import { ShoppingCartContext } from '../../Context';
 import ErrorBoundary from '../ErrorBoundary';
 
 interface CardProps {
+  id: number;
   title: string;
   price: number;
   category: {
     name: string;
   };
   images: string[];
+  description: string;
 }
 
-const CardContent: FC<CardProps> = ({ title, price, category, images }) => {
+const CardContent: FC<CardProps> = ({ id, title, price, category, images, description }) => {
   const [imgError, setImgError] = useState(false);
+  const { addToCart, removeFromCart, isItemInCart } = useContext(ShoppingCartContext);
+  const isSelected = isItemInCart(id);
 
   const handleImageError = () => {
     setImgError(true);
+  };
+
+  const handleCartClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (isSelected) {
+      removeFromCart(id);
+    } else {
+      addToCart({
+        id,
+        title,
+        price,
+        category: category.name,
+        description,
+        image: images[0]
+      });
+    }
   };
 
   return (
@@ -30,9 +51,17 @@ const CardContent: FC<CardProps> = ({ title, price, category, images }) => {
           onError={handleImageError}
           loading="lazy"
         />
-        <div className='absolute top-0 right-0 flex justify-center items-center bg-white w-6 h-6 rounded-full m-2 p-1 hover:bg-gray-100'>
-        🛒
-        </div>
+        <button 
+          className={`absolute top-0 right-0 flex justify-center items-center w-6 h-6 rounded-full m-2 p-1 transition-colors duration-300 ${
+            isSelected 
+              ? 'bg-green-500 text-white hover:bg-green-600' 
+              : 'bg-white hover:bg-gray-100'
+          }`}
+          onClick={handleCartClick}
+          title={isSelected ? 'Remove from cart' : 'Add to cart'}
+        >
+          {isSelected ? '✓' : '🛒'}
+        </button>
       </figure>
       <div className='px-4 py-2'>
         <p className='flex justify-between items-center'>
