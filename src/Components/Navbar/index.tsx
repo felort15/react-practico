@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useState, useContext } from 'react'
 import { ShoppingCartContext } from '../../Context'
+import { ShoppingCartIcon } from '@heroicons/react/16/solid';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -118,7 +119,7 @@ const Navbar = () => {
         </li>
         <li className="relative group">
           <div className="flex items-center cursor-pointer">
-            <span>🛒</span>
+            <span className='text-black/60'><ShoppingCartIcon className='w-6 h-6' /></span>
             <span className="ml-1 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
               {cartItems.length}
             </span>

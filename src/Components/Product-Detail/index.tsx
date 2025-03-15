@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ShoppingCartContext } from '../../Context';
+import { XMarkIcon } from '@heroicons/react/16/solid';
 
 interface Product {
   id: number;
@@ -14,6 +15,7 @@ interface Product {
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const { addToCart, removeFromCart, isItemInCart } = useContext(ShoppingCartContext);
@@ -45,6 +47,10 @@ const ProductDetail = () => {
     }
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -62,7 +68,15 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-6 max-w-6xl mx-auto">
+    <div className="relative flex flex-col md:flex-row gap-8 p-6 max-w-6xl mx-auto">
+      <button
+        onClick={handleClose}
+        className="absolute top-2 right-2 p-2 hover:bg-gray-300 rounded-full transition-colors"
+        title="Close"
+      >
+        <XMarkIcon className="w-6 h-6 text-gray-600" />
+      </button>
+      
       <aside className="md:w-1/2">
         <img 
           src={product.image} 

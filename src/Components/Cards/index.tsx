@@ -2,7 +2,7 @@ import { FC, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCartContext } from '../../Context';
 import ErrorBoundary from '../ErrorBoundary';
-
+import { ShoppingBagIcon } from '@heroicons/react/16/solid';
 interface CardProps {
   id: number;
   title: string;
@@ -69,7 +69,7 @@ const CardContent: FC<CardProps> = ({ id, title, price, category, images, descri
           onClick={handleCartClick}
           title={isSelected ? 'Remove from cart' : 'Add to cart'}
         >
-          {isSelected ? '✓' : '🛒'}
+          {isSelected ? '✓' : <ShoppingBagIcon className='w-6 h-6' />}
         </button>
       </figure>
       <div className='px-4 py-2'>
