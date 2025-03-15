@@ -29,6 +29,7 @@ const SignIn: FC = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
               required
+              autoComplete="username"
             />
           </div>
 
@@ -44,6 +45,7 @@ const SignIn: FC = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               placeholder="Enter your password"
               required
+              autoComplete="current-password"
             />
           </div>
 
