@@ -47,21 +47,22 @@ function Home() {
   return (
     <Layout>
       <div className="fixed top-20 w-full h-[calc(100vh-80px)] overflow-y-auto">
-        <div className="container mx-auto px-4 py-4">
-          <div className="grid grid-cols-4 gap-6 auto-rows-max place-items-center max-w-7xl mx-auto">
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 place-items-center">
             {loading ? (
-              <div className="col-span-full flex justify-center items-center">
+              <div className="col-span-full flex justify-center items-center min-h-[200px]">
                 <p className="text-xl">Loading products...</p>
               </div>
             ) : (
               items.map(item => (
-                <Card 
-                  key={item.id}
-                  title={item.title}
-                  price={item.price}
-                  category={{ name: item.category }}
-                  images={[item.image]}
-                />
+                <div key={item.id} className="w-full flex justify-center">
+                  <Card 
+                    title={item.title}
+                    price={item.price}
+                    category={{ name: item.category }}
+                    images={[item.image]}
+                  />
+                </div>
               ))
             )}
           </div>
