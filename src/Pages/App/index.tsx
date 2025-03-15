@@ -8,6 +8,7 @@ import NotFound from '../NotFound/index.tsx'
 import SignIn from '../SignIn/index.tsx'
 import Navbar from '../../Components/Navbar/index.tsx'
 import { ShoppingCartProvider } from '../../Context/index.tsx'
+import ProductDetail from '../../Components/Product-Detail/index.tsx'
 import './App.css'
 
 const AppRoutes = () => {
@@ -18,6 +19,7 @@ const AppRoutes = () => {
     { path: '/my-orders', element: <MyOrders /> },
     { path: '/sign-in', element: <SignIn /> },
     { path: '/*', element: <NotFound /> },
+    { path: '/product/:id', element: <ProductDetail /> },
   ]
 
   return useRoutes(routes)

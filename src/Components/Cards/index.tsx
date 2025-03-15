@@ -1,4 +1,5 @@
 import { FC, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCartContext } from '../../Context';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -16,10 +17,15 @@ interface CardProps {
 const CardContent: FC<CardProps> = ({ id, title, price, category, images, description }) => {
   const [imgError, setImgError] = useState(false);
   const { addToCart, removeFromCart, isItemInCart } = useContext(ShoppingCartContext);
+  const navigate = useNavigate();
   const isSelected = isItemInCart(id);
 
   const handleImageError = () => {
     setImgError(true);
+  };
+
+  const handleCardClick = () => {
+    navigate(`/product/${id}`);
   };
 
   const handleCartClick = (event: React.MouseEvent) => {
@@ -39,7 +45,10 @@ const CardContent: FC<CardProps> = ({ id, title, price, category, images, descri
   };
 
   return (
-    <div className='bg-white cursor-pointer w-full max-w-[280px] h-[360px] rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'>
+    <div 
+      onClick={handleCardClick}
+      className='bg-white cursor-pointer w-full max-w-[280px] h-[360px] rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'
+    >
       <figure className='relative mb-2 w-full h-4/5'>
         <span className='absolute bottom-0 left-0 bg-white/60 rounded-lg text-black text-xs m-2 px-3 py-0.5'>
           {category?.name || 'Unknown'}
