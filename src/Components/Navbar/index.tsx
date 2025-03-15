@@ -33,11 +33,11 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/clothes'
+            to='/Mens clothingg'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
-            Clothes
+            Men's clothing
           </NavLink>
         </li>
         <li>
@@ -51,20 +51,20 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
-            to='/furnitures'
+            to='/jewerly'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
-            Furnitures
+            Jewerly
           </NavLink>
         </li>
         <li>
           <NavLink
-            to='/toys'
+            to='/women clothing'
             className={({ isActive }) =>
               isActive ? activeStyle : undefined
             }>
-            Toys
+            Women's clothing
           </NavLink>
         </li>
         <li>
