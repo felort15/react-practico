@@ -1,15 +1,36 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useContext } from 'react'
 import { ShoppingCartContext } from '../../Context'
-import { ShoppingCartIcon } from '@heroicons/react/16/solid';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems, removeFromCart } = useContext(ShoppingCartContext);
+  const { 
+    cartItems, 
+    removeFromCart, 
+    isCartOpen, 
+    toggleCart,
+    selectedCategory,
+    setSelectedCategory 
+  } = useContext(ShoppingCartContext);
   const activeStyle = 'underline underline-offset-4'
+  const navigate = useNavigate();
 
   const handleRemoveItem = (id: number) => {
     removeFromCart(id);
+  };
+
+  const handleCheckout = () => {
+    toggleCart();
+    navigate('/my-account');
+  };
+
+  const calculateTotal = () => {
+    return cartItems.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+    navigate('/');
   };
 
   return (
@@ -30,58 +51,44 @@ const Navbar = () => {
       {/* Navigation Links */}
       <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0`}>
         <li>
-          <NavLink
-            to='/'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
+          <button
+            onClick={() => handleCategoryClick('all')}
+            className={`${selectedCategory === 'all' ? activeStyle : ''} hover:underline`}
+          >
             All
-          </NavLink>
+          </button>
         </li>
         <li>
-          <NavLink
-            to='/mens-clothing'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            Men's clothing
-          </NavLink>
+          <button
+            onClick={() => handleCategoryClick("men's clothing")}
+            className={`${selectedCategory === "men's clothing" ? activeStyle : ''} hover:underline`}
+          >
+            Men's Clothing
+          </button>
         </li>
         <li>
-          <NavLink
-            to='/electronics'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
+          <button
+            onClick={() => handleCategoryClick("women's clothing")}
+            className={`${selectedCategory === "women's clothing" ? activeStyle : ''} hover:underline`}
+          >
+            Women's Clothing
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={() => handleCategoryClick('electronics')}
+            className={`${selectedCategory === 'electronics' ? activeStyle : ''} hover:underline`}
+          >
             Electronics
-          </NavLink>
+          </button>
         </li>
         <li>
-          <NavLink
-            to='/jewelry'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            Jewelry
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to='/womens-clothing'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            Women's clothing
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to='/others'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            Others
-          </NavLink>
+          <button
+            onClick={() => handleCategoryClick('jewelery')}
+            className={`${selectedCategory === 'jewelery' ? activeStyle : ''} hover:underline`}
+          >
+            Jewelery
+          </button>
         </li>
       </ul>
 
@@ -89,15 +96,6 @@ const Navbar = () => {
       <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0`}>
         <li className='text-black/60'>
           fakeUser@gmail.com
-        </li>
-        <li>
-          <NavLink
-            to='/my-orders'
-            className={({ isActive }) =>
-              isActive ? activeStyle : undefined
-            }>
-            My Orders
-          </NavLink>
         </li>
         <li>
           <NavLink
@@ -117,20 +115,31 @@ const Navbar = () => {
             Sign In
           </NavLink>
         </li>
-        <li className="relative group">
-          <div className="flex items-center cursor-pointer">
+        <li className="relative">
+          <button 
+            onClick={toggleCart}
+            className="flex items-center cursor-pointer"
+          >
             <span>🛒</span>
             <span className="ml-1 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
               {cartItems.length}
             </span>
-          </div>
+          </button>
           
-          {/* Updated Dropdown menu */}
-          {cartItems.length > 0 && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl invisible group-hover:visible">
+          {/* Dropdown menu */}
+          {isCartOpen && cartItems.length > 0 && (
+            <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl">
               <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">Cart Items</h3>
-                <ul className="space-y-3">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-lg font-semibold">Cart Items</h3>
+                  <button 
+                    onClick={toggleCart}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    ×
+                  </button>
+                </div>
+                <ul className="space-y-3 max-h-60 overflow-y-auto">
                   {cartItems.map(item => (
                     <li key={item.id} className="flex items-center gap-2">
                       <img 
@@ -152,6 +161,18 @@ const Navbar = () => {
                     </li>
                   ))}
                 </ul>
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="font-semibold">Total:</span>
+                    <span className="font-bold">${calculateTotal()}</span>
+                  </div>
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    Checkout
+                  </button>
+                </div>
               </div>
             </div>
           )}

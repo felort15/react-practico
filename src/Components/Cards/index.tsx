@@ -2,80 +2,82 @@ import { FC, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCartContext } from '../../Context';
 import ErrorBoundary from '../ErrorBoundary';
-import { ShoppingBagIcon } from '@heroicons/react/16/solid';
-interface CardProps {
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+
+interface Product {
   id: number;
   title: string;
   price: number;
-  category: {
-    name: string;
-  };
-  images: string[];
+  category: string;
   description: string;
+  image: string;
 }
 
-const CardContent: FC<CardProps> = ({ id, title, price, category, images, description }) => {
-  const [imgError, setImgError] = useState(false);
-  const { addToCart, removeFromCart, isItemInCart } = useContext(ShoppingCartContext);
+interface CardProps {
+  data: Product;
+}
+
+const CardContent: FC<CardProps> = ({ data }) => {
+  const { 
+    addToCart, 
+    removeFromCart, 
+    isItemInCart 
+  } = useContext(ShoppingCartContext);
   const navigate = useNavigate();
-  const isSelected = isItemInCart(id);
+  const [imgError, setImgError] = useState(false);
 
   const handleImageError = () => {
     setImgError(true);
   };
 
   const handleCardClick = () => {
-    navigate(`/product/${id}`);
+    navigate(`/product/${data.id}`);
   };
 
   const handleCartClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    if (isSelected) {
-      removeFromCart(id);
+    if (isItemInCart(data.id)) {
+      removeFromCart(data.id);
     } else {
-      addToCart({
-        id,
-        title,
-        price,
-        category: category.name,
-        description,
-        image: images[0]
-      });
+      addToCart(data);
     }
   };
+
+  const isSelected = isItemInCart(data.id);
 
   return (
     <div 
       onClick={handleCardClick}
-      className='bg-white cursor-pointer w-full max-w-[280px] h-[360px] rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'
+      className="w-full max-w-[280px] bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
     >
-      <figure className='relative mb-2 w-full h-4/5'>
-        <span className='absolute bottom-0 left-0 bg-white/60 rounded-lg text-black text-xs m-2 px-3 py-0.5'>
-          {category?.name || 'Unknown'}
-        </span>
+      <figure className="relative w-full h-[280px] p-4">
         <img 
-          className='w-full h-full object-cover rounded-t-lg' 
-          src={imgError ? `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(title)}` : images[0]} 
-          alt={title}
+          className="w-full h-full object-contain rounded-lg" 
+          src={imgError ? `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(data.title)}` : data.image} 
+          alt={data.title}
           onError={handleImageError}
           loading="lazy"
         />
-        <button 
-          className={`absolute top-0 right-0 flex justify-center items-center w-6 h-6 rounded-full m-2 p-1 transition-colors duration-300 ${
+        <button
+          onClick={handleCartClick}
+          className={`absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
             isSelected 
               ? 'bg-green-500 text-white hover:bg-green-600' 
-              : 'bg-white hover:bg-gray-100'
+              : 'bg-white text-black hover:bg-gray-100'
           }`}
-          onClick={handleCartClick}
-          title={isSelected ? 'Remove from cart' : 'Add to cart'}
         >
-          {isSelected ? '✓' : <ShoppingBagIcon className='w-6 h-6' />}
+          {isSelected ? '✓' : <ShoppingCartIcon className="w-5 h-5" />}
         </button>
+        <span className="absolute bottom-6 left-6 bg-white/80 rounded-full px-3 py-1 text-xs text-black">
+          {data.category}
+        </span>
       </figure>
-      <div className='px-4 py-2'>
-        <p className='flex justify-between items-center'>
-          <span className='text-sm font-light truncate flex-1 mr-2'>{title}</span>
-          <span className='text-lg font-medium whitespace-nowrap'>${price}</span>
+      <div className="p-4 border-t">
+        <h3 className="text-sm font-medium mb-2 line-clamp-2 h-10">
+          {data.title}
+        </h3>
+        <p className="text-lg font-bold">
+          ${data.price}
         </p>
       </div>
     </div>

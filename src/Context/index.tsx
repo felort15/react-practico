@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useContext } from 'react'
+import { createContext, useState, ReactNode, useContext, useEffect } from 'react'
 
 interface Product {
   id: number;
@@ -19,23 +19,37 @@ interface ShoppingCartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
+  items: Product[];
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
 }
 
-export const ShoppingCartContext = createContext<ShoppingCartContextType>({
-  cartItems: [],
-  addToCart: () => {},
-  removeFromCart: () => {},
-  isItemInCart: () => false,
-  isCartOpen: false,
-  setIsCartOpen: () => {},
-  openCart: () => {},
-  closeCart: () => {},
-  toggleCart: () => {},
-})
+export const ShoppingCartContext = createContext<ShoppingCartContextType>({} as any)
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<Product[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [items, setItems] = useState<Product[]>([])
+  const [filteredItems, setFilteredItems] = useState<Product[]>([])
+
+  useEffect(() => {
+    fetch('https://fakestoreapi.com/products')
+      .then(response => response.json())
+      .then(data => {
+        setItems(data)
+        setFilteredItems(data)
+      })
+  }, [])
+
+  useEffect(() => {
+    if (selectedCategory === 'all') {
+      setFilteredItems(items)
+    } else {
+      const filtered = items.filter(item => item.category === selectedCategory)
+      setFilteredItems(filtered)
+    }
+  }, [selectedCategory, items])
 
   const addToCart = (product: Product) => {
     if (!isItemInCart(product.id)) {
@@ -68,6 +82,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
         openCart,
         closeCart,
         toggleCart,
+        items: filteredItems,
+        selectedCategory,
+        setSelectedCategory
       }}
     >
       {children}
