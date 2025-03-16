@@ -119,24 +119,32 @@ const Navbar = () => {
         </li>
         <li className="relative group">
           <div className="flex items-center cursor-pointer">
-            <span className='text-black/60'><ShoppingCartIcon className='w-6 h-6' /></span>
+            <span>🛒</span>
             <span className="ml-1 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
               {cartItems.length}
             </span>
           </div>
           
-          {/* Dropdown menu */}
+          {/* Updated Dropdown menu */}
           {cartItems.length > 0 && (
-            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl invisible group-hover:visible">
+            <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl invisible group-hover:visible">
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">Cart Items</h3>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {cartItems.map(item => (
-                    <li key={item.id} className="flex justify-between items-center">
-                      <span className="text-sm truncate flex-1">{item.title}</span>
+                    <li key={item.id} className="flex items-center gap-2">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm truncate">{item.title}</p>
+                        <p className="text-sm font-medium">${item.price}</p>
+                      </div>
                       <button
                         onClick={() => handleRemoveItem(item.id)}
-                        className="ml-2 text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700"
                         title="Remove item"
                       >
                         ×
