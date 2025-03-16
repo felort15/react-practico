@@ -16,6 +16,9 @@ interface ShoppingCartContextType {
   isItemInCart: (productId: number) => boolean;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
 }
 
 export const ShoppingCartContext = createContext<ShoppingCartContextType>({
@@ -25,6 +28,9 @@ export const ShoppingCartContext = createContext<ShoppingCartContextType>({
   isItemInCart: () => false,
   isCartOpen: false,
   setIsCartOpen: () => {},
+  openCart: () => {},
+  closeCart: () => {},
+  toggleCart: () => {},
 })
 
 export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
@@ -34,6 +40,7 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const addToCart = (product: Product) => {
     if (!isItemInCart(product.id)) {
       setCartItems(prev => [...prev, product])
+      setIsCartOpen(true)
     }
   }
 
@@ -45,6 +52,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
     return cartItems.some(item => item.id === productId)
   }
 
+  const openCart = () => setIsCartOpen(true)
+  const closeCart = () => setIsCartOpen(false)
+  const toggleCart = () => setIsCartOpen(!isCartOpen)
+
   return (
     <ShoppingCartContext.Provider 
       value={{
@@ -54,6 +65,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
         isItemInCart,
         isCartOpen,
         setIsCartOpen,
+        openCart,
+        closeCart,
+        toggleCart,
       }}
     >
       {children}

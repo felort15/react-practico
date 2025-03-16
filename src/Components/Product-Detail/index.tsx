@@ -18,7 +18,12 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const { addToCart, removeFromCart, isItemInCart } = useContext(ShoppingCartContext);
+  const { 
+    addToCart, 
+    removeFromCart, 
+    isItemInCart,
+    openCart
+  } = useContext(ShoppingCartContext);
   const isSelected = product ? isItemInCart(product.id) : false;
 
   useEffect(() => {
@@ -44,6 +49,7 @@ const ProductDetail = () => {
       removeFromCart(product.id);
     } else {
       addToCart(product);
+      openCart();
     }
   };
 
