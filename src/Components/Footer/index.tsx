@@ -9,7 +9,7 @@ const Footer = () => {
             <p>📍 123 Shopping Street, E-commerce City</p>
             <p>📞 +1 (555) 123-4567</p>
             <p>✉️ support@shopi.com</p>
-            <p>⏰ Mon - Fri: 9:00 AM - 6:00 PM</p>
+            <p>⏰ Mon - Fri: 9:00 AM - 8:00 PM</p>
           </div>
         </div>
 
