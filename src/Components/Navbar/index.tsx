@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useContext, useRef, useEffect } from 'react'
 import { ShoppingCartContext } from '../../Context'
-import { TrashIcon, SunIcon, MoonIcon, Bars3Icon } from '@heroicons/react/24/outline'
+import { TrashIcon, SunIcon, MoonIcon, Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,7 +16,9 @@ const Navbar = () => {
     selectedCategory,
     setSelectedCategory,
     isDarkMode,
-    toggleDarkMode
+    toggleDarkMode,
+    searchQuery,
+    setSearchQuery
   } = useContext(ShoppingCartContext);
   const activeStyle = 'underline underline-offset-4'
   const navigate = useNavigate();
@@ -62,7 +64,7 @@ const Navbar = () => {
   return (
     <nav className='flex flex-col md:flex-row justify-between items-center fixed z-10 w-full py-5 px-8 text-sm font-light bg-white dark:bg-gray-800 dark:text-white transition-colors duration-200'>
       {/* Logo and menu button */}
-      <div className='flex justify-between items-center w-full md:w-auto'>
+      <div className='flex justify-between items-center w-full md:w-auto md:mr-8'>
         <NavLink to='/' className='font-semibold text-lg'>
           Shopi
         </NavLink>
@@ -75,8 +77,8 @@ const Navbar = () => {
         </button>
       </div>
 
-      <div ref={menuRef} className="w-full md:w-auto">
-        {/* Navigation Links */}
+      <div ref={menuRef} className="w-full md:flex md:items-center md:justify-between md:flex-1">
+        {/* Categories - Left Side */}
         <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0`}>
           <li>
             <button
@@ -120,7 +122,21 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {/* User menu */}
+        {/* Search bar - Center */}
+        <div className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex items-center justify-center w-full md:w-auto mt-4 md:mt-0`}>
+          <div className="relative w-full md:w-64 mx-4">
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 pl-10 text-sm border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+            />
+            <MagnifyingGlassIcon className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+          </div>
+        </div>
+
+        {/* User menu - Right Side */}
         <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center gap-3 w-full md:w-auto mt-4 md:mt-0`}>
           <li>
             <button
