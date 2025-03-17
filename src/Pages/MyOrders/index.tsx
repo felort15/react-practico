@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Layout from '../../Components/Layout/index.tsx';
-
 const MyOrders: FC = () => {
   return (
     <Layout>

@@ -22,8 +22,7 @@ const ProductDetail = () => {
     addToCart, 
     removeFromCart, 
     isItemInCart,
-    openCart,
-    toggleCart
+    openCart
   } = useContext(ShoppingCartContext);
   const isSelected = product ? isItemInCart(product.id) : false;
 
