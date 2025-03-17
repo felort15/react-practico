@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useContext, useRef, useEffect } from 'react'
 import { ShoppingCartContext } from '../../Context'
-import { TrashIcon, SunIcon, MoonIcon, Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { TrashIcon, SunIcon, MoonIcon, Bars3Icon, ShoppingCartIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -179,7 +179,9 @@ const Navbar = () => {
               onClick={toggleCart}
               className="flex items-center cursor-pointer"
             >
-              <span>🛒</span>
+              <span className="w-6 h-6">
+                <ShoppingCartIcon />
+              </span>
               <span className="ml-1 bg-black dark:bg-white dark:text-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 {cartItems.length}
               </span>
