@@ -22,6 +22,8 @@ interface ShoppingCartContextType {
   items: Product[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
 export const ShoppingCartContext = createContext<ShoppingCartContextType>({} as any)
@@ -32,6 +34,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [items, setItems] = useState<Product[]>([])
   const [filteredItems, setFilteredItems] = useState<Product[]>([])
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem('darkMode')
+    return savedMode ? JSON.parse(savedMode) : false
+  })
 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
@@ -50,6 +56,19 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
       setFilteredItems(filtered)
     }
   }, [selectedCategory, items])
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [isDarkMode])
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode)
+  }
 
   const addToCart = (product: Product) => {
     if (!isItemInCart(product.id)) {
@@ -84,7 +103,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
         toggleCart,
         items: filteredItems,
         selectedCategory,
-        setSelectedCategory
+        setSelectedCategory,
+        isDarkMode,
+        toggleDarkMode
       }}
     >
       {children}

@@ -26,9 +26,9 @@ const AppRoutes = () => {
 function App() {
   return (
     <ShoppingCartProvider>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-200">
         <Navbar />
-        <div className="flex-grow pt-[68px] px-4">
+        <div className="flex-grow pt-[68px] px-4 dark:bg-gray-900">
           <div className="max-w-screen-xl mx-auto py-8">
             <AppRoutes />
           </div>

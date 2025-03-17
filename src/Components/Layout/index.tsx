@@ -6,7 +6,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="w-full">
+    <div className="w-full dark:bg-gray-900 transition-colors duration-200">
       {children}
     </div>
   );
