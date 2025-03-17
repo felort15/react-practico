@@ -1,11 +1,12 @@
 import { FC, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../../Components/Layout/index.tsx';
+import Layout from '../../Components/Layout';
 import { ShoppingCartContext } from '../../Context';
+import { TrashIcon } from '@heroicons/react/24/outline';
 
 const MyAccount: FC = () => {
   const navigate = useNavigate();
-  const { cartItems } = useContext(ShoppingCartContext);
+  const { cartItems, removeFromCart } = useContext(ShoppingCartContext);
   const [paymentStatus, setPaymentStatus] = useState<'pending' | 'processing' | 'success'>('pending');
 
   const calculateTotal = () => {
@@ -58,6 +59,13 @@ const MyAccount: FC = () => {
                     <p className="text-sm font-medium">{item.title}</p>
                     <p className="text-sm text-gray-600">${item.price}</p>
                   </div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                    title="Remove item"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
                 </div>
               ))}
               <div className="flex justify-between items-center pt-4 font-bold">

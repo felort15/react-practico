@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useState, useContext } from 'react'
 import { ShoppingCartContext } from '../../Context'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -153,10 +154,10 @@ const Navbar = () => {
                       </div>
                       <button
                         onClick={() => handleRemoveItem(item.id)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-gray-400 hover:text-red-500 transition-colors p-1"
                         title="Remove item"
                       >
-                        ×
+                        <TrashIcon className="w-5 h-5" />
                       </button>
                     </li>
                   ))}
