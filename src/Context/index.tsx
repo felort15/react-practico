@@ -24,6 +24,8 @@ interface ShoppingCartContextType {
   setSelectedCategory: (category: string) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }
 
 export const ShoppingCartContext = createContext<ShoppingCartContextType>({} as any)
@@ -34,6 +36,7 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [items, setItems] = useState<Product[]>([])
   const [filteredItems, setFilteredItems] = useState<Product[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedMode = localStorage.getItem('darkMode')
     return savedMode ? JSON.parse(savedMode) : false
@@ -50,12 +53,18 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (selectedCategory === 'all') {
-      setFilteredItems(items)
+      const filtered = items.filter(item => 
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      setFilteredItems(filtered)
     } else {
-      const filtered = items.filter(item => item.category === selectedCategory)
+      const filtered = items.filter(item => 
+        item.category === selectedCategory && 
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
       setFilteredItems(filtered)
     }
-  }, [selectedCategory, items])
+  }, [selectedCategory, items, searchQuery])
 
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode))
@@ -105,7 +114,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
         selectedCategory,
         setSelectedCategory,
         isDarkMode,
-        toggleDarkMode
+        toggleDarkMode,
+        searchQuery,
+        setSearchQuery
       }}
     >
       {children}
