@@ -20,6 +20,9 @@ const mockContextValue = {
   toggleDarkMode: jest.fn(),
   searchQuery: '',
   setSearchQuery: jest.fn(),
+  isAuthenticated: false,
+  setIsAuthenticated: jest.fn(),
+  logout: jest.fn()
 };
 
 const renderWithRouter = (component: React.ReactNode) => {
