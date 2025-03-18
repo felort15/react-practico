@@ -13,9 +13,10 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "axios": "^1.8.3",
+    "netlify-cli": "^19.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "react-router-dom": "^6.30.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.2",
@@ -25,13 +26,16 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
+<<<<<<< HEAD
     "esbuild": "^0.25.0",
+=======
+    "esbuild": "^0.25.1",
+>>>>>>> 069d83b (npm update to netlify)
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "netlify-cli": "^19.0.2",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
-    "vite": "^5.1.1"
+    "vite": "^6.2.2"
   }
 }
