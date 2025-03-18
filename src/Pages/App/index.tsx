@@ -4,6 +4,8 @@ import MyAccount from '../MyAccount/index.tsx'
 import MyOrders from '../MyOrders/index.tsx'
 import NotFound from '../NotFound/index.tsx'
 import SignIn from '../SignIn/index.tsx'
+import Register from '../Register/index.tsx'
+import Checkout from '../Checkout/index.tsx'
 import Navbar from '../../Components/Navbar/index.tsx'
 import { ShoppingCartProvider } from '../../Context/index.tsx'
 import ProductDetail from '../../Components/Product-Detail/index.tsx'
@@ -16,6 +18,8 @@ const AppRoutes = () => {
     { path: '/my-account', element: <MyAccount /> },
     { path: '/my-orders', element: <MyOrders /> },
     { path: '/sign-in', element: <SignIn /> },
+    { path: '/register', element: <Register /> },
+    { path: '/checkout', element: <Checkout /> },
     { path: '/*', element: <NotFound /> },
     { path: '/product/:id', element: <ProductDetail /> },
   ]

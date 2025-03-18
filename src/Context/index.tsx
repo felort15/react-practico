@@ -1,6 +1,6 @@
-import { createContext, useState, ReactNode, useContext, useEffect } from 'react'
+import { createContext, FC, ReactNode, useState, useContext, useEffect } from 'react'
 
-interface Product {
+export interface Product {
   id: number;
   title: string;
   price: number;
@@ -26,11 +26,38 @@ interface ShoppingCartContextType {
   toggleDarkMode: () => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (value: boolean) => void;
+  logout: () => void;
 }
 
-export const ShoppingCartContext = createContext<ShoppingCartContextType>({} as any)
+export const ShoppingCartContext = createContext<ShoppingCartContextType>({
+  cartItems: [],
+  addToCart: () => {},
+  removeFromCart: () => {},
+  isItemInCart: () => false,
+  isCartOpen: false,
+  setIsCartOpen: () => {},
+  openCart: () => {},
+  closeCart: () => {},
+  toggleCart: () => {},
+  items: [],
+  selectedCategory: 'all',
+  setSelectedCategory: () => {},
+  isDarkMode: false,
+  toggleDarkMode: () => {},
+  searchQuery: '',
+  setSearchQuery: () => {},
+  isAuthenticated: false,
+  setIsAuthenticated: () => {},
+  logout: () => {},
+})
 
-export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
+interface Props {
+  children: ReactNode;
+}
+
+export const ShoppingCartProvider: FC<Props> = ({ children }) => {
   const [cartItems, setCartItems] = useState<Product[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -40,6 +67,9 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedMode = localStorage.getItem('darkMode')
     return savedMode ? JSON.parse(savedMode) : false
+  })
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isAuthenticated') === 'true'
   })
 
   useEffect(() => {
@@ -98,6 +128,14 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
   const closeCart = () => setIsCartOpen(false)
   const toggleCart = () => setIsCartOpen(!isCartOpen)
 
+  const logout = () => {
+    localStorage.removeItem('userCredentials')
+    localStorage.removeItem('isAuthenticated')
+    setIsAuthenticated(false)
+    setCartItems([])
+    closeCart()
+  }
+
   return (
     <ShoppingCartContext.Provider 
       value={{
@@ -116,7 +154,10 @@ export const ShoppingCartProvider = ({ children }: { children: ReactNode }) => {
         isDarkMode,
         toggleDarkMode,
         searchQuery,
-        setSearchQuery
+        setSearchQuery,
+        isAuthenticated,
+        setIsAuthenticated,
+        logout,
       }}
     >
       {children}
