@@ -1,0 +1,14 @@
+[[plugins]]
+package = "netlify-plugin-visual-diff"
+
+  [plugins.inputs]
+  # Increase threshold for acceptable differences
+  failThreshold = 0.10
+  # Paths to exclude from visual diffing
+  exclude = [
+    "**/*.html",
+    "**/node_modules/**"
+  ]
+  # Wait for dynamic content to load
+  waitForSelector = "#root"
+  waitForTimeout = 5000 
