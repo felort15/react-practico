@@ -18,7 +18,9 @@ const Navbar = () => {
     isDarkMode,
     toggleDarkMode,
     searchQuery,
-    setSearchQuery
+    setSearchQuery,
+    isAuthenticated,
+    logout
   } = useContext(ShoppingCartContext);
   const activeStyle = 'underline underline-offset-4'
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ const Navbar = () => {
 
   const handleCheckout = () => {
     toggleCart();
-    navigate('/my-account');
+    navigate('/checkout');
   };
 
   const calculateTotal = () => {
@@ -151,29 +153,56 @@ const Navbar = () => {
               )}
             </button>
           </li>
-          <li className='text-black/60 dark:text-white/60'>
-            fakeUser@gmail.com
-          </li>
-          <li>
-            <NavLink
-              to='/my-account'
-              onClick={() => setIsMenuOpen(false)}
-              className={({ isActive }) =>
-                isActive ? activeStyle : undefined
-              }>
-              My Account
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to='/sign-in'
-              onClick={() => setIsMenuOpen(false)}
-              className={({ isActive }) =>
-                isActive ? activeStyle : undefined
-              }>
-              Sign In
-            </NavLink>
-          </li>
+          {isAuthenticated ? (
+            <>
+              <li className='text-black/60 dark:text-white/60'>
+                {JSON.parse(localStorage.getItem('userCredentials') || '{}').email}
+              </li>
+              <li>
+                <NavLink
+                  to='/my-account'
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    isActive ? activeStyle : undefined
+                  }>
+                  My Account
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                to='/my-orders'
+                onClick={() => setIsMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive ? activeStyle : undefined
+                }>
+                My Orders
+              </NavLink>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                    navigate('/sign-in');
+                  }}
+                  className="hover:underline"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <li>
+              <NavLink
+                to='/sign-in'
+                onClick={() => setIsMenuOpen(false)}
+                className={({ isActive }) =>
+                  isActive ? activeStyle : undefined
+                }>
+                Sign In
+              </NavLink>
+            </li>
+          )}
           <li className="relative">
             <button 
               onClick={toggleCart}
